@@ -12,9 +12,13 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    
-    # instantiating player object in the middle of the screen
 
+    # Grouping sprites that update and sprites that are drwan
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+
+    # instantiating player object in the middle of the screen
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     
     # infinite loop closed by quitting the game
@@ -23,10 +27,13 @@ def main():
             if event.type == pygame.QUIT:
                 return
         screen.fill((0, 0, 0)) #creates black screen
-        player.draw(screen) #draws 'triangle'(player) in the middle of the screen
+        # draws each item in the 'drawable' group onto the screen
+        for item in drawable:
+            item.draw(screen)
+        updatable.update(dt)
         pygame.display.flip()
         dt = clock.tick(60)/1000
 
 if __name__ == "__main__":
     main()
-
+    
